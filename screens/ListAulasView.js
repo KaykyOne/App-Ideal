@@ -13,7 +13,7 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
 
-export default function ListAulasView ({ route }) {
+export default function ListAulasView({ route }) {
   const { cpf } = route.params;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,7 +23,8 @@ export default function ListAulasView ({ route }) {
   const listAulasViewModel = new ListAulasViewModel();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedAula, setSelectedAula] = useState(null); // Para armazenar a aula selecionada para exclusão
+  const [selectedAula, setSelectedAula] = useState(null);
+  const [modalAction, setModalAction] = useState(null); // Para diferenciar se é excluir ou confirmar
 
   const showToast = (type, text1, text2) => {
     Toast.show({
@@ -50,7 +51,7 @@ export default function ListAulasView ({ route }) {
       if (!data) setError('Nenhuma aula encontrada.');
     } catch (error) {
       setError(error.message);
-      showToast('error', 'Erro', error)
+      showToast('error', 'Erro', error.message);
     } finally {
       setLoading(false);
     }
@@ -60,52 +61,62 @@ export default function ListAulasView ({ route }) {
     fetchAulas();
   }, [cpf]);
 
-  const handleAction = (action, aulaId, item) => {
-    console.log(`Ação: ${action}, ID da Aula: ${aulaId}`);
+  const handleAction = (action, item) => {
+    console.log(`Ação: ${action}, ID da Aula: ${item.aula_id}`);
 
     const { data, hora } = item;
     const aulaDateTime = moment(`${data} ${hora}`, 'YYYY-MM-DD HH:mm');
     const currentDateTime = moment();
-
-    console.log(`Data da Aula: ${aulaDateTime.format()}, Hora Atual: ${currentDateTime.format()}`);
 
     if (action === 'Excluir') {
       if (
         aulaDateTime.isAfter(currentDateTime) &&
         (data !== currentDate || aulaDateTime.diff(currentDateTime, 'hours') >= 3)
       ) {
-        console.log('Aula pode ser excluída.');
-        // Armazena a aula selecionada e exibe o modal
         setSelectedAula(item);
+        setModalAction('Excluir');
         setModalVisible(true);
       } else {
-        console.log('Aula não pode ser excluída.');
         showToast('error', 'Erro', 'Você só pode excluir a aula com pelo menos 3 horas de antecedência.');
       }
-      return;
+    } else if (action === 'Confirmar') {
+      if (aulaDateTime.isBefore(currentDateTime)) {
+        setSelectedAula(item);
+        setModalAction('Confirmar');
+        setModalVisible(true);
+      } else {
+        showToast('error', 'Erro', 'Você só pode confirmar aulas passadas.');
+      }
     }
-  
-    // Lógica para outras ações...
   };
 
-  const confirmDeletion = async () => {
-    if (selectedAula) {
-      // Lógica de exclusão aqui...
-      console.log('Aula excluída!', selectedAula);
-      showToast('success', 'Sucesso', 'Aula excluída com sucesso!');
+  const confirmAction = async () => {
+    if (selectedAula && selectedAula.aula_id) {
+      try {
+        if (modalAction === 'Excluir') {
+          console.log('Aula excluída!', selectedAula);
+          await listAulasViewModel.deleteAula(selectedAula.aula_id);
+          showToast('success', 'Sucesso', 'Aula excluída com sucesso!');
+        } else if (modalAction === 'Confirmar') {
+          console.log('Aula confirmada!', selectedAula);
+          await listAulasViewModel.alterAula("Concluída", selectedAula.aula_id, "Concluída", cpf);
+          showToast('success', 'Sucesso', 'Aula confirmada com sucesso!');
+        }
 
-      // Atualiza a lista de aulas
-      await listAulasViewModel.deleteAula(selectedAula.aula_id); // Supondo que você tenha uma função para deletar a aula
-      fetchAulas();
-      
-      // Fecha o modal
-      setModalVisible(false);
-      setSelectedAula(null); // Limpa a seleção
+        fetchAulas();
+        setModalVisible(false);
+        setSelectedAula(null);
+      } catch (error) {
+        showToast('error', 'Erro', error.message);
+      }
+    } else {
+      console.error('Erro: Aula ou ID da aula não selecionado corretamente.');
     }
   };
 
   const renderAulaItem = ({ item }) => (
     <View style={styles.itemContainer}>
+      <Text style={styles.itemText}>{item.aula_id}</Text>
       <Text style={styles.itemTitle}>Data:</Text>
       <Text style={styles.itemText}>
         {moment(item.data).format('DD/MM/YYYY')}
@@ -117,8 +128,13 @@ export default function ListAulasView ({ route }) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.actionButton, styles.deleteButton]}
-          onPress={() => handleAction('Excluir', item.aula_id, item)}>
+          onPress={() => handleAction('Excluir', item)}>
           <Text style={styles.actionButtonText}>Excluir</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.actionButton, styles.confirmButton]}
+          onPress={() => handleAction('Confirmar', item)}>
+          <Text style={styles.actionButtonText}>Confirmar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -149,12 +165,14 @@ export default function ListAulasView ({ route }) {
       <Modal isVisible={modalVisible}>
         <View style={styles.modalContent}>
           <Text style={styles.modalMessage}>
-            Você tem certeza que deseja excluir a aula {selectedAula?.tipo}?
+            {modalAction === 'Excluir'
+              ? `Você tem certeza que deseja excluir a aula ${selectedAula?.tipo}?`
+              : `Você tem certeza que deseja confirmar a aula ${selectedAula?.tipo}?`}
           </Text>
           <View style={styles.modalButtons}>
             <TouchableOpacity
               style={styles.modalButton}
-              onPress={confirmDeletion}>
+              onPress={confirmAction}>
               <Text style={styles.modalButtonText}>Confirmar</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -230,6 +248,10 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: '#f44336',
+    width: '100%',
+  },
+  confirmButton: {
+    backgroundColor: 'green',
     width: '100%',
   },
   actionButtonText: {

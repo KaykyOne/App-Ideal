@@ -18,7 +18,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kayssar.snack73fe4a99b51443cc8f82b6c0b80fe3e9"
     },
     "web": {
       "favicon": "./assets/favicon.png"

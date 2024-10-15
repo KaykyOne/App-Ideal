@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   image: {
-    height: 128,
-    width: 250,
+    height: 100,
+    width: 200,
     margin: 20,
   },
   textInput: {

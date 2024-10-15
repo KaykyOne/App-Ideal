@@ -6,7 +6,7 @@ export class HomeViewModel {
     this.serverTimeService = new ServerTimeService(); // Instancia a classe
   }
 
-  // Método para buscar e concluir aulas pendentes passadas
+  // Método para buscar e concluir aulas pendentes passadas e do dia atual
   async marcarAulasConcluidas(cpf) {
     try {
       // Busca o ID do aluno pelo CPF
@@ -38,21 +38,23 @@ export class HomeViewModel {
       // Pega a data e hora atuais
       const { currentDate, currentTime } = await this.getCurrentTimeAndDateFromServer();
 
-      if (!currentDate) {
-        throw new Error('Não foi possível obter a data atuais.');
+      if (!currentDate || !currentTime) {
+        throw new Error('Não foi possível obter a data atual.');
       }
 
       // Ajuste a data atual para levar em conta a diferença de fuso horário
-      const adjustedCurrentDate = new Date(currentDate);
-      adjustedCurrentDate.setHours(adjustedCurrentDate.getHours() - 3); // Subtraindo 3 horas
+      const adjustedCurrentDate = new Date(currentDate.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }));
+
+      console.log('Data atual ajustada:', adjustedCurrentDate);
+      console.log('Aulas pendentes:', aulasPendentes);
 
       await this.checkAndUpdateLog(alunoId, adjustedCurrentDate, currentTime);
 
-      // Filtra aulas que estão com data anterior ao atual
+      // Filtra aulas que estão com data anterior ou igual à data atual ajustada
       const aulasParaConcluir = aulasPendentes.filter((aula) => {
         const aulaDate = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data
-        // Verifica se a data da aula é anterior à data atual ajustada
-        return aulaDate < adjustedCurrentDate;
+        // Verifica se a data da aula é anterior ou igual à data atual ajustada
+        return aulaDate <= adjustedCurrentDate;
       });
 
       if (aulasParaConcluir.length === 0) {
@@ -161,8 +163,7 @@ export class HomeViewModel {
 
       console.log('Log criado com sucesso!', insert);
     }
-  };
-
+  }
 
   async getCurrentTimeAndDateFromServer() {
     const { currentDate, currentTime } =

@@ -62,7 +62,7 @@ export class ListAulasViewModel {
       // Busca o valor atual dos contadores
       const { data: userData, error: userError } = await supabase
         .from('usuarios')
-        .select('num_aulas, num_faltas')
+        .select('num_aulas')
         .eq('cpf', cpf)
         .single();
 
@@ -92,6 +92,7 @@ export class ListAulasViewModel {
 
       return updateUserData;
     } catch (error) {
+      console.log(error);
       throw error; // Repassa o erro para quem chamou o método
     }
   }

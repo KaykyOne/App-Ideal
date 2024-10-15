@@ -15,6 +15,7 @@ import SuportView from './screens/SuportView';
 
   const Stack = createNativeStackNavigator();
 
+  //app
   const App = () => {
     return (
       <NavigationContainer>

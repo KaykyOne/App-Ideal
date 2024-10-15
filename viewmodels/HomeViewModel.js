@@ -6,7 +6,11 @@ export class HomeViewModel {
     this.serverTimeService = new ServerTimeService(); // Instancia a classe
   }
 
+<<<<<<< HEAD
   // Método para buscar e concluir aulas pendentes passadas
+=======
+  // Método para buscar e concluir aulas pendentes passadas e do dia atual
+>>>>>>> main
   async marcarAulasConcluidas(cpf) {
     try {
       // Busca o ID do aluno pelo CPF
@@ -36,6 +40,7 @@ export class HomeViewModel {
       }
 
       // Pega a data e hora atuais
+<<<<<<< HEAD
       const { currentDate } = await this.getCurrentTimeAndDateFromServer();
 
       if (!currentDate) {
@@ -51,6 +56,27 @@ export class HomeViewModel {
         const aulaDate = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data
         // Verifica se a data da aula é anterior à data atual ajustada
         return aulaDate < adjustedCurrentDate;
+=======
+      const { currentDate, currentTime } = await this.getCurrentTimeAndDateFromServer();
+
+      if (!currentDate || !currentTime) {
+        throw new Error('Não foi possível obter a data atual.');
+      }
+
+      // Ajuste a data atual para levar em conta a diferença de fuso horário
+      const adjustedCurrentDate = new Date(currentDate.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }));
+
+      console.log('Data atual ajustada:', adjustedCurrentDate);
+      console.log('Aulas pendentes:', aulasPendentes);
+
+      await this.checkAndUpdateLog(alunoId, adjustedCurrentDate, currentTime);
+
+      // Filtra aulas que estão com data anterior ou igual à data atual ajustada
+      const aulasParaConcluir = aulasPendentes.filter((aula) => {
+        const aulaDate = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data
+        // Verifica se a data da aula é anterior ou igual à data atual ajustada
+        return aulaDate <= adjustedCurrentDate;
+>>>>>>> main
       });
 
       if (aulasParaConcluir.length === 0) {
@@ -112,6 +138,58 @@ export class HomeViewModel {
     }
   }
 
+<<<<<<< HEAD
+=======
+  async checkAndUpdateLog(alunoId, adjustedCurrentDate, currentTime) {
+    // Verifica se já existe um log para o aluno
+    const { data: existingLogs, error: fetchError } = await supabase
+      .from('logs')
+      .select('*')
+      .eq('aluno_id', alunoId);
+
+    if (fetchError) {
+      console.error('Erro ao buscar logs:', fetchError);
+      return;
+    }
+
+    if (existingLogs.length > 0) {
+      // Se já existe um log, atualiza o log existente
+      const { error: updateError } = await supabase
+        .from('logs')
+        .update({
+          data: adjustedCurrentDate,
+          hora: currentTime,
+        })
+        .eq('aluno_id', alunoId);
+
+      if (updateError) {
+        console.error('Erro ao atualizar log:', updateError);
+        return;
+      }
+
+      console.log('Log atualizado com sucesso!');
+    } else {
+      // Se não existe um log, cria um novo
+      const { data: insert, error: insertError } = await supabase
+        .from('logs')
+        .insert([
+          {
+            aluno_id: alunoId,
+            data: adjustedCurrentDate,
+            hora: currentTime,
+          },
+        ]);
+
+      if (insertError) {
+        console.error('Erro ao criar log:', insertError);
+        return;
+      }
+
+      console.log('Log criado com sucesso!', insert);
+    }
+  }
+
+>>>>>>> main
   async getCurrentTimeAndDateFromServer() {
     const { currentDate, currentTime } =
       await this.serverTimeService.getCurrentTimeAndDateFromServer();

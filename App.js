@@ -16,6 +16,7 @@ import SuportView from './screens/SuportView';
   const Stack = createNativeStackNavigator();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   //app.js
 >>>>>>> e08b1ff (atualizar master)
@@ -23,6 +24,13 @@ import SuportView from './screens/SuportView';
     return (
       <NavigationContainer>
         <Toast />
+=======
+  //app.js
+  const App = () => {
+    return (
+      <NavigationContainer>
+        <Toast ref={(ref) => Toast.setRef(ref)} />
+>>>>>>> main
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             name="Login"

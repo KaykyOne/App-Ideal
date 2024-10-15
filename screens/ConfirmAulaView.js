@@ -143,9 +143,12 @@ const ConfirmAulaView = ({ route, navigation }) => {
       <Text style={styles.detail}>
         Hora da Aula: <Text style={styles.detailValue}>{hora}</Text>
       </Text>
+<<<<<<< HEAD
       <Text style={styles.detail}>
         Seu CPF: <Text style={styles.detailValue}>{cpf}</Text>
       </Text>
+=======
+>>>>>>> main
 
       <LoadingIndicator visible={loading} />
 

@@ -8,8 +8,11 @@ node_modules/
 dist/
 web-build/
 
+<<<<<<< HEAD
 .env
 
+=======
+>>>>>>> main
 # Native
 *.orig.*
 *.jks

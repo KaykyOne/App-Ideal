@@ -54,7 +54,7 @@ export class HomeViewModel {
       const aulasParaConcluir = aulasPendentes.filter((aula) => {
         const aulaDate = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data
         // Verifica se a data da aula é anterior ou igual à data atual ajustada
-        return aulaDate <= adjustedCurrentDate;
+        return aulaDate < adjustedCurrentDate;
       });
 
       if (aulasParaConcluir.length === 0) {

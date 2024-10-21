@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
 
-const ErrorView = ({ navigation }) => {
-
+const ErrorView = ({ route, navigation }) => {
+  const { error } = route.params;
   // Função acionada pelo primeiro botão
   const handleFirstButton = () => {
     navigation.navigate('Login');
@@ -13,6 +13,7 @@ const ErrorView = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Erro!</Text>
+      <Text style={styles.title2}>{error}</Text>
 
       <TouchableOpacity style={styles.button} onPress={handleFirstButton}>
         <Text style={styles.buttonText}>Sair</Text>
@@ -31,6 +32,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
+  },
+  title2: {
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 20,

@@ -138,6 +138,36 @@ export class ConfirmAulaViewModel {
     }
   }
 
+  async getConfig() {
+    try {
+      // Executa a consulta no Supabase
+      const { data, error } = await supabase
+        .from('configuracoes')
+        .select('chave, valor')
+        .in('chave', ['aulas', 'maximoNormalDia']);
+  
+      // Lidar com erros na consulta
+      if (error || !data) {
+        throw new Error(`Erro ao buscar configuracoes: ${error.message}`);
+      }
+  
+      // Transforma o array em um objeto chave-valor
+      const configObj = data.reduce((acc, config) => {
+        acc[config.chave] = config.valor;
+        return acc;
+      }, {});
+  
+      // Retornar o objeto com as configurações
+      return configObj;
+    } catch (err) {
+      console.error('Erro na função getConfig:', err.message);
+      throw err;
+    }
+  }
+
+  
+  
+
   async countClass(id, situacao) {
     try {
       const { count, error } = await supabase

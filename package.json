@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.3",
-    "@expo/webpack-config": "^0.12.52",
+    "@expo/webpack-config": "^19.0.1",
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.1",
@@ -21,7 +21,7 @@
     "crypto-browserify": "*",
     "crypto-js": "*",
     "dotenv": "^16.4.5",
-    "expo": "^45.0.8",
+    "expo": "^51.0.38",
     "expo-localization": "~15.0.3",
     "expo-status-bar": "~1.12.1",
     "https-browserify": "*",

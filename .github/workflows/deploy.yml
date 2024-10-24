@@ -19,7 +19,7 @@ jobs:
         node-version: '20'  # Ajuste para a versão 20, igual à sua versão local
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --force
 
     - name: Build project
       env:

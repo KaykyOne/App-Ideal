@@ -26,7 +26,7 @@ jobs:
         URL: ${{ secrets.URL }}  # Usa a variável de ambiente do Supabase
         KEY: ${{ secrets.KEY }}  # Usa a variável de ambiente do Supabase
         SECRET_KEY: ${{ secrets.SECRET_KEY }}  # Usa a variável de ambiente do Supabase
-      run: npx run build  # Ajuste conforme necessário para o seu projeto
+      run: npx expo export:web  # Ajuste conforme necessário para o seu projeto
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3

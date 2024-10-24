@@ -16,7 +16,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'  # Use uma versão LTS estável
+        node-version: '14'  # Altere para a versão do Node.js que seu projeto requer
 
     - name: Install dependencies
       run: npm install
@@ -26,10 +26,11 @@ jobs:
         URL: ${{ secrets.URL }}  # Usa a variável de ambiente do Supabase
         KEY: ${{ secrets.KEY }}  # Usa a variável de ambiente do Supabase
         SECRET_KEY: ${{ secrets.SECRET_KEY }}  # Usa a variável de ambiente do Supabase
-      run: npx expo export:web  # Comando para construir a versão web
+      run: npm run build:web  # Ajuste conforme necessário para o seu projeto
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}  # Token padrão do GitHub para acessar o repositório
-        publish_dir: ./web-build  # O diretório onde a build é gerada (ajuste conforme necessário)
+        publish_dir: ./build  # O diretório onde a build é gerada (ajuste se necessário)
+

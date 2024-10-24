@@ -138,8 +138,8 @@ const ConfirmAulaView = ({ route, navigation }) => {
       <Modal isVisible={isModalVisible}>
         <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
           <Text>{modalMessage}</Text>
-          <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <Text>Fechar</Text>
+          <TouchableOpacity style={styles.buttonFechar} onPress={() => setModalVisible(false)}>
+            <Text style={styles.txtButton}>Fechar</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -191,6 +191,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#F8F8F8',
+  },
+  txtButton: {
+    color: 'white',
   },
   title: {
     fontSize: 24,
@@ -248,6 +251,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
   },
+  buttonFechar: {
+    backgroundColor: 'red',
+    borderRadius: 10,
+    margin: 10,
+    textAlign: 'center',
+    padding: 10,
+  }
 });
 
 export default ConfirmAulaView;

@@ -49,16 +49,38 @@ export class ListAulasViewModel {
 
   async alterAula(campo, id, tipy, cpf) {
     try {
+      // Obtém a data e hora atuais do servidor
+      const { currentDate, currentTime } = await this.getCurrentTimeAndDateFromServer();
+  
+      // Busca a aula pelo ID
+      const { data: aulaData, error: aulaError } = await supabase
+        .from('aulas')
+        .select('data, hora')
+        .eq('aula_id', id)
+        .single();
+  
+      if (aulaError) {
+        throw new Error(aulaError.message);
+      }
+  
+      const aulaDateTime = new Date(`${aulaData.data}T${aulaData.hora}`);
+      const currentDateTime = new Date(`${currentDate}T${currentTime}`);
+  
+      // Verifica se a aula já passou ou se está dentro do horário permitido
+      if (currentDateTime < aulaDateTime) {
+        throw new Error('A aula ainda não pode ser concluída. O horário ainda não foi alcançado.');
+      }
+  
       // Atualiza o campo 'situacao' da aula
       const { data: updateAulaData, error: updateAulaError } = await supabase
         .from('aulas')
         .update({ situacao: campo })
         .eq('aula_id', id);
-
+  
       if (updateAulaError) {
         throw new Error(updateAulaError.message);
       }
-
+  
       // Busca o valor atual dos contadores
       const { data: userData, error: userError } = await supabase
         .from('usuarios')
@@ -69,11 +91,11 @@ export class ListAulasViewModel {
 >>>>>>> main
         .eq('cpf', cpf)
         .single();
-
+  
       if (userError) {
         throw new Error(userError.message);
       }
-
+  
       // Incrementa o valor apropriado
       const newValues = {};
       if (tipy === 'Concluída') {
@@ -83,17 +105,17 @@ export class ListAulasViewModel {
       } else {
         return;
       }
-
+  
       // Atualiza os contadores no banco de dados
       const { data: updateUserData, error: updateUserError } = await supabase
         .from('usuarios')
         .update(newValues)
         .eq('cpf', cpf);
-
+  
       if (updateUserError) {
         throw new Error(updateUserError.message);
       }
-
+  
       return updateUserData;
     } catch (error) {
 <<<<<<< HEAD

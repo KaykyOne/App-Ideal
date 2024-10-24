@@ -72,12 +72,45 @@ export class HomeViewModel {
       await this.checkAndUpdateLog(alunoId, adjustedCurrentDate, currentTime);
 
       // Filtra aulas que estão com data anterior ou igual à data atual ajustada
+      // Filtra aulas que estão com data anterior ou igual à data atual ajustada
       const aulasParaConcluir = aulasPendentes.filter((aula) => {
+<<<<<<< HEAD
         const aulaDate = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data
         // Verifica se a data da aula é anterior ou igual à data atual ajustada
         return aulaDate <= adjustedCurrentDate;
 >>>>>>> main
+=======
+        const aulaDateTime = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data e hora corretamente formatada
+      
+        // Verifica se a data da aula é anterior à data atual ajustada
+        if (aulaDateTime < adjustedCurrentDate) {
+          return true;
+        }
+      
+        // Se as datas forem exatamente iguais, verifica a hora
+        if (aulaDateTime.toDateString() === adjustedCurrentDate.toDateString()) {
+          // Verifica a hora e minutos
+          const aulaHoras = aulaDateTime.getHours();
+          const aulaMinutos = aulaDateTime.getMinutes();
+      
+          const currentHoras = adjustedCurrentDate.getHours();
+          const currentMinutos = adjustedCurrentDate.getMinutes();
+      
+          // Verifica se a hora da aula já passou ou é igual
+          if (
+            aulaHoras < currentHoras ||
+            (aulaHoras === currentHoras && aulaMinutos <= currentMinutos)
+          ) {
+            return true;
+          }
+        }
+      
+        // Se a data for futura ou a hora não atender os critérios, não filtra a aula
+        return false;
+>>>>>>> main
       });
+      
+
 
       if (aulasParaConcluir.length === 0) {
         console.log('Nenhuma aula precisa ser atualizada.');

@@ -12,6 +12,7 @@ const ConfirmAulaView = ({ route, navigation }) => {
   const [holidays] = useState([]);
   var [loading, setLoading] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const confirmAulaViewModel = new ConfirmAulaViewModel(); // Instância correta
 
@@ -58,11 +59,11 @@ const ConfirmAulaView = ({ route, navigation }) => {
       setLoading(true);
 
       if (isHoliday(date) || isWeekend(date)) {
-        toggleModal(
-          'Data Indisponíve: A data selecionada é um feriado, sábado ou domingo.'
-        );
+        toggleModal('Data Indisponível: A data selecionada é um feriado, sábado ou domingo.');
+        setLoading(false);
         return;
       }
+      
 
       const user = await confirmAulaViewModel.getUsuarioByCpf(cpf);
       const totalClassCount = await confirmAulaViewModel.countClass(
@@ -74,10 +75,16 @@ const ConfirmAulaView = ({ route, navigation }) => {
         date
       );
 
+      const config = await confirmAulaViewModel.getConfig();
+      const aulas = config['aulas'];
+      const maximoNormalDia = config['maximoNormalDia'];           
+      console.log(aulas);
+      console.log(maximoNormalDia);
+
       const isOutraCidade = user.outra_cidade;
 
       // Regra: Máximo de 4 aulas no total
-      if (totalClassCount >= 4) {
+      if (totalClassCount >= aulas) {
         toggleModal(
           'Número máximo de 4 aulas atingido. Conclua suas aulas para poder marcar mais!'
         );
@@ -95,7 +102,7 @@ const ConfirmAulaView = ({ route, navigation }) => {
         }
       } else {
         // Para outros alunos, apenas 1 aula por dia é permitida
-        if (totalClassHoje >= 1) {
+        if (totalClassHoje >= maximoNormalDia) {
           toggleModal(
             'Você já marcou uma aula para este dia. Marque em outro dia.'
           );
@@ -115,10 +122,11 @@ const ConfirmAulaView = ({ route, navigation }) => {
       if (result) {
         navigation.navigate('End', { nameInstructor, data, cpf, type, hora });
       } else {
-        navigation.navigate('Error');
+        navigation.navigate('Error', 'Não foi possivel confirmar a aula');
       }
     } catch (error) {
-      navigation.navigate('Error');
+      
+      navigation.navigate('Error', error.message);
     } finally {
       setLoading(false); // Certifique-se de que o carregamento é falso ao final
     }
@@ -126,8 +134,17 @@ const ConfirmAulaView = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* Modal de mensagem */}
+      <Modal isVisible={isModalVisible}>
+        <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
+          <Text>{modalMessage}</Text>
+          <TouchableOpacity style={styles.buttonFechar} onPress={() => setModalVisible(false)}>
+            <Text style={styles.txtButton}>Fechar</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+  
       <Text style={styles.title}>Confirme sua Aula</Text>
-
       <Text style={styles.detail}>
         Tipo da Aula: <Text style={styles.detailValue}>{type}</Text>
       </Text>
@@ -135,14 +152,12 @@ const ConfirmAulaView = ({ route, navigation }) => {
         Instrutor: <Text style={styles.detailValue}>{nameInstructor}</Text>
       </Text>
       <Text style={styles.detail}>
-        Data Selecionada:{' '}
-        <Text style={styles.detailValue}>
-          {moment(date).format('DD/MM/YYYY')}
-        </Text>
+        Data Selecionada: <Text style={styles.detailValue}>{moment(date).format('DD/MM/YYYY')}</Text>
       </Text>
       <Text style={styles.detail}>
         Hora da Aula: <Text style={styles.detailValue}>{hora}</Text>
       </Text>
+<<<<<<< HEAD
 <<<<<<< HEAD
       <Text style={styles.detail}>
         Seu CPF: <Text style={styles.detailValue}>{cpf}</Text>
@@ -150,8 +165,11 @@ const ConfirmAulaView = ({ route, navigation }) => {
 =======
 >>>>>>> main
 
+=======
+  
+>>>>>>> main
       <LoadingIndicator visible={loading} />
-
+  
       <TouchableOpacity
         style={styles.button}
         onPress={loading ? null : handleConfirm}>
@@ -159,13 +177,13 @@ const ConfirmAulaView = ({ route, navigation }) => {
           {loading ? 'Processando...' : 'Finalizar'}
         </Text>
       </TouchableOpacity>
-
+  
       <TouchableOpacity
         style={[styles.button, styles.buttonBack]}
         onPress={() => navigation.goBack()}>
         <Text style={styles.buttonText}>Voltar</Text>
       </TouchableOpacity>
-
+  
       <View style={styles.contador}>
         <View style={[styles.circle, { backgroundColor: 'blue' }]} />
         <View style={[styles.circle, { backgroundColor: 'blue' }]} />
@@ -174,8 +192,8 @@ const ConfirmAulaView = ({ route, navigation }) => {
       </View>
     </View>
   );
-};
-
+  
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -183,6 +201,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#F8F8F8',
+  },
+  txtButton: {
+    color: 'white',
   },
   title: {
     fontSize: 24,
@@ -240,6 +261,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
   },
+  buttonFechar: {
+    backgroundColor: 'red',
+    borderRadius: 10,
+    margin: 10,
+    textAlign: 'center',
+    padding: 10,
+  }
 });
 
 export default ConfirmAulaView;

@@ -5,6 +5,9 @@ on:
     branches:
       - master  # A branch que irá disparar o workflow
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest

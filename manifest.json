@@ -1,0 +1,17 @@
+{
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "lang": "en",
+  "name": "App Ideal",
+  "short_name": "App Ideal",
+  "start_url": "/?utm_source=web_app_manifest",
+  "orientation": "portrait",
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "http://play.google.com/store/apps/details?id=com.kayssar.snack73fe4a99b51443cc8f82b6c0b80fe3e9",
+      "id": "com.kayssar.snack73fe4a99b51443cc8f82b6c0b80fe3e9"
+    }
+  ],
+  "prefer_related_applications": true
+}

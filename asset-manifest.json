@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.js": "/static/js/main.825663ca.js",
+    "static/js/732.783bc47a.chunk.js": "/static/js/732.783bc47a.chunk.js",
+    "static/js/197.c52b9e77.js": "/static/js/197.c52b9e77.js",
+    "static/media/Ionicons.ttf": "/static/media/Ionicons.9b6b1954a5eb6efeaf11.ttf",
+    "static/media/logoAutoEscolaIdeal.png": "/static/media/logoAutoEscolaIdeal.89f318846fb3758fde32.png",
+    "static/media/AntDesign.ttf": "/static/media/AntDesign.163adab9dbd7cb1ed12a.ttf",
+    "favicon.ico": "/favicon.ico",
+    "index.html": "/index.html",
+    "favicon-32.png": "/favicon-32.png",
+    "favicon-16.png": "/favicon-16.png",
+    "manifest.json": "/manifest.json",
+    "serve.json": "/serve.json",
+    "main.825663ca.js.map": "/static/js/main.825663ca.js.map",
+    "732.783bc47a.chunk.js.map": "/static/js/732.783bc47a.chunk.js.map",
+    "197.c52b9e77.js.map": "/static/js/197.c52b9e77.js.map"
+  },
+  "entrypoints": [
+    "static/js/197.c52b9e77.js",
+    "static/js/main.825663ca.js"
+  ]
+}

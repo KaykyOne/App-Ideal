@@ -6,11 +6,7 @@ export class HomeViewModel {
     this.serverTimeService = new ServerTimeService(); // Instancia a classe
   }
 
-<<<<<<< HEAD
-  // Método para buscar e concluir aulas pendentes passadas
-=======
   // Método para buscar e concluir aulas pendentes passadas e do dia atual
->>>>>>> main
   async marcarAulasConcluidas(cpf) {
     try {
       // Busca o ID do aluno pelo CPF
@@ -40,23 +36,6 @@ export class HomeViewModel {
       }
 
       // Pega a data e hora atuais
-<<<<<<< HEAD
-      const { currentDate } = await this.getCurrentTimeAndDateFromServer();
-
-      if (!currentDate) {
-        throw new Error('Não foi possível obter a data atuais.');
-      }
-
-      // Ajuste a data atual para levar em conta a diferença de fuso horário
-      const adjustedCurrentDate = new Date(currentDate);
-      adjustedCurrentDate.setHours(adjustedCurrentDate.getHours() - 3); // Subtraindo 3 horas
-
-      // Filtra aulas que estão com data anterior ao atual
-      const aulasParaConcluir = aulasPendentes.filter((aula) => {
-        const aulaDate = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data
-        // Verifica se a data da aula é anterior à data atual ajustada
-        return aulaDate < adjustedCurrentDate;
-=======
       const { currentDate, currentTime } = await this.getCurrentTimeAndDateFromServer();
 
       if (!currentDate || !currentTime) {
@@ -72,14 +51,7 @@ export class HomeViewModel {
       await this.checkAndUpdateLog(alunoId, adjustedCurrentDate, currentTime);
 
       // Filtra aulas que estão com data anterior ou igual à data atual ajustada
-      // Filtra aulas que estão com data anterior ou igual à data atual ajustada
       const aulasParaConcluir = aulasPendentes.filter((aula) => {
-<<<<<<< HEAD
-        const aulaDate = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data
-        // Verifica se a data da aula é anterior ou igual à data atual ajustada
-        return aulaDate <= adjustedCurrentDate;
->>>>>>> main
-=======
         const aulaDateTime = new Date(aula.data); // Certifique-se que aula.data é uma string que representa uma data e hora corretamente formatada
       
         // Verifica se a data da aula é anterior à data atual ajustada
@@ -107,10 +79,7 @@ export class HomeViewModel {
       
         // Se a data for futura ou a hora não atender os critérios, não filtra a aula
         return false;
->>>>>>> main
       });
-      
-
 
       if (aulasParaConcluir.length === 0) {
         console.log('Nenhuma aula precisa ser atualizada.');
@@ -125,10 +94,7 @@ export class HomeViewModel {
           .eq('aula_id', aula.aula_id);
 
         if (updateError) {
-          console.error(
-            'Erro ao marcar aula como concluída:',
-            updateError.message
-          );
+          console.error('Erro ao marcar aula como concluída:', updateError.message);
         } else {
           console.log(`Aula marcada como concluída.`);
         }
@@ -171,8 +137,6 @@ export class HomeViewModel {
     }
   }
 
-<<<<<<< HEAD
-=======
   async checkAndUpdateLog(alunoId, adjustedCurrentDate, currentTime) {
     // Verifica se já existe um log para o aluno
     const { data: existingLogs, error: fetchError } = await supabase
@@ -205,13 +169,11 @@ export class HomeViewModel {
       // Se não existe um log, cria um novo
       const { data: insert, error: insertError } = await supabase
         .from('logs')
-        .insert([
-          {
-            aluno_id: alunoId,
-            data: adjustedCurrentDate,
-            hora: currentTime,
-          },
-        ]);
+        .insert([{
+          aluno_id: alunoId,
+          data: adjustedCurrentDate,
+          hora: currentTime,
+        }]);
 
       if (insertError) {
         console.error('Erro ao criar log:', insertError);
@@ -222,7 +184,6 @@ export class HomeViewModel {
     }
   }
 
->>>>>>> main
   async getCurrentTimeAndDateFromServer() {
     const { currentDate, currentTime } =
       await this.serverTimeService.getCurrentTimeAndDateFromServer();

@@ -3,10 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-<<<<<<< HEAD
   Alert,
-=======
->>>>>>> main
   FlatList,
   TouchableOpacity,
 } from 'react-native';
@@ -17,11 +14,7 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
 
-<<<<<<< HEAD
-export default function ListAulasView ({ route }) {
-=======
 export default function ListAulasView({ route }) {
->>>>>>> main
   const { cpf } = route.params;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,45 +23,20 @@ export default function ListAulasView({ route }) {
   const [currentDate, setCurrentDate] = useState(null);
   const listAulasViewModel = new ListAulasViewModel();
   const navigation = useNavigation();
-<<<<<<< HEAD
-  const [modalMessage, setModalMessage] = useState('');
-
-  const toggleModal = (message) => {
-    setModalMessage(message);
-    setModalVisible(!isModalVisible);
-  };
-
-  const showToast = (type, text1, text2, onPress) => {
-=======
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAula, setSelectedAula] = useState(null);
   const [modalAction, setModalAction] = useState(null); // Para diferenciar se é excluir ou confirmar
 
   const showToast = (type, text1, text2) => {
->>>>>>> main
     Toast.show({
       type,
       text1,
       text2,
       position: 'top',
-<<<<<<< HEAD
-      // Customizando o Toast para ter um botão
-      visibilityTime: 5000,
-      onPress: () => {
-        if (onPress) {
-          onPress();
-        }
-      }
-    });
-  };
-
-
-=======
       visibilityTime: 5000,
     });
   };
 
->>>>>>> main
   const fetchAulas = async () => {
     setLoading(true);
     setError(null);
@@ -84,11 +52,7 @@ export default function ListAulasView({ route }) {
       if (!data) setError('Nenhuma aula encontrada.');
     } catch (error) {
       setError(error.message);
-<<<<<<< HEAD
-      showToast('error', 'Erro', error)
-=======
       showToast('error', 'Erro', error.message);
->>>>>>> main
     } finally {
       setLoading(false);
     }
@@ -98,13 +62,6 @@ export default function ListAulasView({ route }) {
     fetchAulas();
   }, [cpf]);
 
-<<<<<<< HEAD
-  const handleAction = async (action, aulaId, item) => {
-    const { data, hora } = item;
-    const aulaDateTime = moment(`${data} ${hora}`, 'YYYY-MM-DD HH:mm');
-    const currentDateTime = moment();
-  
-=======
   const handleAction = (action, item) => {
     console.log(`Ação: ${action}, ID da Aula: ${item.aula_id}`);
 
@@ -112,60 +69,11 @@ export default function ListAulasView({ route }) {
     const aulaDateTime = moment(`${data} ${hora}`, 'YYYY-MM-DD HH:mm');
     const currentDateTime = moment();
 
->>>>>>> main
     if (action === 'Excluir') {
       if (
         aulaDateTime.isAfter(currentDateTime) &&
         (data !== currentDate || aulaDateTime.diff(currentDateTime, 'hours') >= 3)
       ) {
-<<<<<<< HEAD
-        // Exibe o Toast para confirmar a exclusão
-        showToast('info', 'Confirmação', 'Tem certeza que deseja excluir esta aula?', {
-          onPress: async () => {
-            try {
-              setLoading(true);
-              await listAulasViewModel.deleteAula(aulaId);
-              showToast('success', 'Sucesso', 'Aula excluída com sucesso');
-              fetchAulas(); // Atualiza as aulas após a exclusão
-            } catch (error) {
-              showToast('error', 'Erro', error.message);
-              console.error(error);
-            } finally {
-              setLoading(false);
-            }
-          }
-        });
-      } else {
-        showToast('error', 'Erro', 'Você só pode excluir a aula com pelo menos 3 horas de antecedência.');
-      }
-      return;
-    }
-  
-    try {
-      setLoading(true);
-  
-      if (
-        data < currentDate ||
-        (data === currentDate && item.hora < currentTime)
-      ) {
-        await listAulasViewModel.alterAula(action, aulaId, action, cpf);
-        showToast('success', 'Sucesso', `Aula marcada como ${action.toLowerCase()}`);
-        fetchAulas(); // Atualiza a lista de aulas
-      } else {
-        showToast('error', 'Aviso', 'A aula não pode ser marcada como concluída ou ausente antes do horário!');
-      }
-    } catch (error) {
-      showToast('error', 'Erro', error.message);
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-
-  const renderAulaItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-=======
         setSelectedAula(item);
         setModalAction('Excluir');
         setModalVisible(true);
@@ -209,8 +117,6 @@ export default function ListAulasView({ route }) {
 
   const renderAulaItem = ({ item }) => (
     <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{item.aula_id}</Text>
->>>>>>> main
       <Text style={styles.itemTitle}>Data:</Text>
       <Text style={styles.itemText}>
         {moment(item.data).format('DD/MM/YYYY')}
@@ -220,13 +126,6 @@ export default function ListAulasView({ route }) {
       <Text style={styles.itemTitle}>Hora:</Text>
       <Text style={styles.itemText}>{item.hora}</Text>
       <View style={styles.buttonContainer}>
-<<<<<<< HEAD
-          <TouchableOpacity
-            style={[styles.actionButton, styles.deleteButton]}
-            onPress={() => handleAction('Excluir', item.aula_id, item)}>
-            <Text style={styles.actionButtonText}>Excluir</Text>
-          </TouchableOpacity>
-=======
         <TouchableOpacity
           style={[styles.actionButton, styles.deleteButton]}
           onPress={() => handleAction('Excluir', item)}>
@@ -237,7 +136,6 @@ export default function ListAulasView({ route }) {
           onPress={() => handleAction('Confirmar', item)}>
           <Text style={styles.actionButtonText}>Confirmar</Text>
         </TouchableOpacity>
->>>>>>> main
       </View>
     </View>
   );
@@ -263,8 +161,6 @@ export default function ListAulasView({ route }) {
         onPress={() => navigation.goBack()}>
         <Text style={styles.buttonText}>Voltar</Text>
       </TouchableOpacity>
-<<<<<<< HEAD
-=======
 
       <Modal isVisible={modalVisible}>
         <View style={styles.modalContent}>
@@ -287,7 +183,6 @@ export default function ListAulasView({ route }) {
           </View>
         </View>
       </Modal>
->>>>>>> main
     </View>
   );
 };
@@ -345,67 +240,37 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
   },
-<<<<<<< HEAD
-  secondaryButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-=======
->>>>>>> main
   actionButton: {
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
-<<<<<<< HEAD
-  completeButton: {
-    backgroundColor: '#4caf50',
-    width: '100%',
-  },
-  absentButton: {
-    backgroundColor: '#ff9800',
-    width: '48%',
-  },
   deleteButton: {
-    backgroundColor: '#f44336',
-    width: '48%',
-=======
-  deleteButton: {
-    backgroundColor: '#f44336',
-    width: '100%',
+    backgroundColor: '#FF4C4C',
+    marginBottom: 10,
   },
   confirmButton: {
-    backgroundColor: 'green',
-    width: '100%',
->>>>>>> main
+    backgroundColor: '#4CAF50',
   },
   actionButtonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
+    color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
   },
   buttonBack: {
-    backgroundColor: 'gray',
+    marginTop: 20,
+    backgroundColor: '#007BFF',
     borderRadius: 8,
+    paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15,
-    marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
   },
   buttonText: {
-    color: '#ffffff',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
-<<<<<<< HEAD
-=======
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 10,
@@ -414,8 +279,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalMessage: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 20,
+    textAlign: 'center',
   },
   modalButtons: {
     flexDirection: 'row',
@@ -423,15 +289,16 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   modalButton: {
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 5,
-    width: '45%',
-    alignItems: 'center',
+    backgroundColor: '#007BFF',
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginHorizontal: 5,
   },
   modalButtonText: {
-    color: '#ffffff',
+    color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
   },
->>>>>>> main
 });
+

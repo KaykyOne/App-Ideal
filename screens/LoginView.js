@@ -11,17 +11,11 @@ import {
 import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
 import { LoginViewModel } from '../viewmodels/LoginViewModel';
-<<<<<<< HEAD
-
-export default function LoginView({ navigation }) {
-  const [cpf, setCpf] = useState('');
-=======
 import CryptoJS from 'crypto-js';
 import { SECRET_KEY } from '@env';
 
 export default function LoginView({ navigation }) {
   const [cpfNormal, setCpf] = useState('');
->>>>>>> main
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -49,11 +43,6 @@ export default function LoginView({ navigation }) {
     });
   };
 
-<<<<<<< HEAD
-  const login = async () => {
-    if (!cpf) {
-=======
-
   const generateHash = (input) => {
     // Concatena o CPF com o salt
     const combinedInput = input + SECRET_KEY;
@@ -66,16 +55,12 @@ export default function LoginView({ navigation }) {
 
   const login = async () => {
     if (!cpfNormal) {
->>>>>>> main
       showToast('error', 'Erro', 'Por favor, insira o CPF.');
       return;
     }
 
-<<<<<<< HEAD
-=======
-    var cpf = generateHash(cpfNormal);
+    const cpf = generateHash(cpfNormal);
 
->>>>>>> main
     setLoading(true);
     try {
       const nome = await loginViewModel.searchUsersByCPF(cpf);
@@ -140,11 +125,7 @@ export default function LoginView({ navigation }) {
       />
       <TextInput
         placeholder="Digite seu CPF"
-<<<<<<< HEAD
-        value={cpf}
-=======
         value={cpfNormal}
->>>>>>> main
         onChangeText={handleCpfChange}
         style={styles.textInput}
         keyboardType="numeric"
@@ -189,13 +170,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   image: {
-<<<<<<< HEAD
-    height: 128,
-    width: 250,
-=======
     height: 100,
     width: 200,
->>>>>>> main
     margin: 20,
   },
   textInput: {

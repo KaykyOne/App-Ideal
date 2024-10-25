@@ -64,7 +64,6 @@ const ConfirmAulaView = ({ route, navigation }) => {
         return;
       }
       
-
       const user = await confirmAulaViewModel.getUsuarioByCpf(cpf);
       const totalClassCount = await confirmAulaViewModel.countClass(
         user.usuario_id,
@@ -122,10 +121,9 @@ const ConfirmAulaView = ({ route, navigation }) => {
       if (result) {
         navigation.navigate('End', { nameInstructor, data, cpf, type, hora });
       } else {
-        navigation.navigate('Error', 'Não foi possivel confirmar a aula');
+        navigation.navigate('Error', 'Não foi possível confirmar a aula');
       }
     } catch (error) {
-      
       navigation.navigate('Error', error.message);
     } finally {
       setLoading(false); // Certifique-se de que o carregamento é falso ao final
@@ -157,17 +155,10 @@ const ConfirmAulaView = ({ route, navigation }) => {
       <Text style={styles.detail}>
         Hora da Aula: <Text style={styles.detailValue}>{hora}</Text>
       </Text>
-<<<<<<< HEAD
-<<<<<<< HEAD
       <Text style={styles.detail}>
         Seu CPF: <Text style={styles.detailValue}>{cpf}</Text>
       </Text>
-=======
->>>>>>> main
-
-=======
   
->>>>>>> main
       <LoadingIndicator visible={loading} />
   
       <TouchableOpacity
@@ -192,8 +183,8 @@ const ConfirmAulaView = ({ route, navigation }) => {
       </View>
     </View>
   );
-  
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

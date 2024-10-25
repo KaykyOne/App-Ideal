@@ -13,78 +13,67 @@ import ListAulasView from './screens/ListAulasView';
 import SelectHourAndDateView from './screens/SelectHourAndDateView';
 import SuportView from './screens/SuportView';  
 
-  const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  //app.js
->>>>>>> e08b1ff (atualizar master)
-  const App = () => {
-    return (
-      <NavigationContainer>
-        <Toast />
-=======
-  //app.js
-  const App = () => {
-    return (
-      <NavigationContainer>
-        <Toast ref={(ref) => Toast.setRef(ref)} />
->>>>>>> main
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen
-            name="Login"
-            component={LoginView}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Suport"
-            component={SuportView}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeView}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SelectType"
-            component={SelectType}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SelectInstructor"
-            component={SelectInstructor}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ConfirmAula"
-            component={ConfirmAula}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="End"
-            component={EndView}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Error"
-            component={ErrorView}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ListAulas"
-            component={ListAulasView}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SelectHourAndDate"
-            component={SelectHourAndDateView}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  };
+// app.js
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={LoginView}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Suport"
+          component={SuportView}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeView}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SelectType"
+          component={SelectType}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SelectInstructor"
+          component={SelectInstructor}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ConfirmAula"
+          component={ConfirmAula}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="End"
+          component={EndView}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Error"
+          component={ErrorView}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListAulas"
+          component={ListAulasView}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SelectHourAndDate"
+          component={SelectHourAndDateView}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-  export default App;
+export default App;

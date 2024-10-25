@@ -27,11 +27,7 @@ const SelectHourAndDateView = ({ route, navigation }) => {
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-<<<<<<< HEAD
   const [actionToConfirm, setActionToConfirm] = useState(null); // Para armazenar a ação a ser confirmada
-=======
-  const [actionToConfirm, setActionToConfirm] = useState(null);
->>>>>>> main
 
   const selectHourViewModel = new SelectHourViewModel();
 
@@ -43,11 +39,7 @@ const SelectHourAndDateView = ({ route, navigation }) => {
         );
         const data = await response.json();
         setHolidays(data.map((holiday) => holiday.date));
-<<<<<<< HEAD
-      } catch {
-=======
       } catch (err) {
->>>>>>> main
         showError('Erro ao buscar os feriados.');
       }
     };
@@ -60,12 +52,7 @@ const SelectHourAndDateView = ({ route, navigation }) => {
       setLoading(true);
       try {
         await selectHourViewModel.atualizarValores(nameInstructor, date, type);
-<<<<<<< HEAD
-        const { currentTime } =
-          await selectHourViewModel.getCurrentTimeAndDateFromServer();
-=======
         const { currentTime } = await selectHourViewModel.getCurrentTimeAndDateFromServer();
->>>>>>> main
         setHoras(selectHourViewModel.horasDisponiveis);
         setCurrentTime(currentTime);
       } catch (err) {
@@ -115,7 +102,6 @@ const SelectHourAndDateView = ({ route, navigation }) => {
     }
 
     // Exibir modal de confirmação antes de navegar
-<<<<<<< HEAD
     showConfirmationModal(
       `Você tem certeza que deseja marcar para ${hora} neste dia?`,
       () => {
@@ -128,17 +114,6 @@ const SelectHourAndDateView = ({ route, navigation }) => {
         });
       }
     );
-=======
-
-    navigation.navigate('ConfirmAula', {
-      cpf,
-      type,
-      nameInstructor,
-      data: date,
-      hora,
-    });
-
->>>>>>> main
   };
 
   const renderHourItem = ({ item }) => {
@@ -173,13 +148,7 @@ const SelectHourAndDateView = ({ route, navigation }) => {
         <TouchableOpacity onPress={() => changeDate(-1)}>
           <AntDesign name="caretleft" size={60} color="black" />
         </TouchableOpacity>
-<<<<<<< HEAD
-        <TouchableOpacity
-          onPress={abrirCalendario}
-          style={styles.dateContainer}>
-=======
         <TouchableOpacity onPress={abrirCalendario} style={styles.dateContainer}>
->>>>>>> main
           <Ionicons name="calendar" size={28} color="blue" />
           <Text style={styles.dateTime}>
             {moment(date).format('DD/MM/YYYY')}
@@ -241,13 +210,9 @@ const SelectHourAndDateView = ({ route, navigation }) => {
             <TouchableOpacity
               style={styles.modalButton}
               onPress={() => {
-<<<<<<< HEAD
-                actionToConfirm(); // Executa a ação confirmada
-=======
                 if (actionToConfirm) {
                   actionToConfirm(); // Executa a ação confirmada
                 }
->>>>>>> main
                 setModalVisible(false); // Fecha o modal
               }}>
               <Text style={styles.modalButtonText}>Confirmar</Text>
@@ -260,11 +225,7 @@ const SelectHourAndDateView = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> main
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
